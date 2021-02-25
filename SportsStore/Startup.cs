@@ -11,6 +11,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace SportsStore
 {
+    /// <summary>
+    /// This class is responsible for configuring the ASP.NET core
+    /// application.
+    /// </summary>
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -31,6 +35,9 @@ namespace SportsStore
         {
             if (env.IsDevelopment())
             {
+                // This extension method displays details of exceptions that occur in the application, which is
+                // useful during the development process. It shouldn't be enabled in deployed applications.
+                // This will be disabled when deployed in Ch 11.
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -40,8 +47,17 @@ namespace SportsStore
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            
+            // This extension method adds a simple message to HTTP responses 
+            // that would not otherwise have a body, such as 404 - Not found responses
+            app.UseStatusCodePages();
+            
+            // This extension method enables support for serving static content from the
+            // wwwroot folder. More details in Ch 15
             app.UseStaticFiles();
 
+            // The endpoint routing feature is added to the request pipeline with the UseRouting
+            // and UseEndpoints
             app.UseRouting();
 
             app.UseAuthorization();
