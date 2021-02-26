@@ -19,34 +19,37 @@ namespace SportsStore.Models
         {
             StoreDbContext context = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<StoreDbContext>();
 
-            //if (context.Products == null || !context.Products.Any())
-            using(context)
+            if (!context.Products.Any())
             {
-                context.Products.AddRange(
-                        new Product { 
-                            Name = "Kayak",
-                            Description = "A boat for one person",
-                            Category = "Watersports",
-                            Price = 275
-                        },
-                        new Product
-                        {
-                            Name = "Lifejacket",
-                            Description = "Protective and fashionable",
-                            Category = "Watersports",
-                            Price = 48.95m
-                        },
-                        new Product
-                        {
-                            Name = "Soccer Ball",
-                            Description = "FIFA-approved size and weight",
-                            Category = "Soccer",
-                            Price = 19.5m
-                        }
-                    );
-                context.SaveChanges();
-                context.Dispose();
-            }
+                using (context)
+                {
+                    context.Products.AddRange(
+                            new Product
+                            {
+                                Name = "Kayak",
+                                Description = "A boat for one person",
+                                Category = "Watersports",
+                                Price = 275
+                            },
+                            new Product
+                            {
+                                Name = "Lifejacket",
+                                Description = "Protective and fashionable",
+                                Category = "Watersports",
+                                Price = 48.95m
+                            },
+                            new Product
+                            {
+                                Name = "Soccer Ball",
+                                Description = "FIFA-approved size and weight",
+                                Category = "Soccer",
+                                Price = 19.5m
+                            }
+                        );
+                    context.SaveChanges();
+                    context.Dispose();
+                }
+            }            
         }
 
         //public static void Seed(StoreDbContext context)
