@@ -8,20 +8,17 @@
 @using SportsStore.Models.ViewModels
 @model ProductsListViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to SportsStore</h1>
-    
+<div class="text-center">        
     @foreach (var p in Model.Products)
-    { 
-        <div>
-            <h3>@p.Name</h3>
-            @p.Description
-            <h4>@p.Price.ToString("c")</h4> <!--ToString("c") renders numerical values as currency-->
-        </div>
+    {   
+        <partial name="ProductSummary" model="p" />
     }
 
     <!--When Razor finds the page-model attribute on the div element it asks
         the PageLinkTagHelper class to transform the element, which produces the
         set of links-->
-    <div page-model="@Model.PagingInfo" page-action="Index"></div>
+    <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-outline-dark"
+         page-class-selected ="btn-primary" class="btn-group pull-right m-1">
+    </div>
 </div>

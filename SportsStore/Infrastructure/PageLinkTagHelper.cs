@@ -39,15 +39,36 @@ namespace SportsStore.Infrastructure
 
         public string PageAction { get; set; }
 
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        /// <summary>
+        /// Values of attributes are automatically used to set the tag helper
+        /// property values, with the mapping between the HTML attribute name 
+        /// format (page-class-normal) and the C# property name format(PageClassNormal)
+        /// taken into account.
+        /// This allows tag helpers to respond differently based on the attributes of an
+        /// HTML element, creating a more flexible way to generate content in
+        /// ASP.NET Core application
+        /// </summary>
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             TagBuilder result = new TagBuilder("div");
             for (int i = 1; i < PageModel.TotalPages; i++)
             {
-                TagBuilder tag = new TagBuilder("a");
+                TagBuilder tag = new TagBuilder("a");                
                 tag.Attributes["href"] = urlHelper.Action(PageAction, new { productPage = i });
-                tag.InnerHtml.Append(i.ToString() + " ");
+
+                if (PageClassesEnabled) {
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageModel.CurrentPage
+                        ? PageClassSelected : PageClassNormal);
+                }
+
+                tag.InnerHtml.Append(i.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
