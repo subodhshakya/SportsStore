@@ -73,6 +73,11 @@ namespace SportsStore
 
             app.UseEndpoints(endpoints =>
             {
+                // This new route is to make URLs more appealing
+                // by creating a composable URLs scheme
+                endpoints.MapControllerRoute("pagination", 
+                    "Products/Page{productPage}",
+                    new { Controller = "Home", action = "Index" });
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

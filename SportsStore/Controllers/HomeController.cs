@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SportsStore.Models;
+using SportsStore.Models.ViewModels;
 
 namespace SportsStore.Controllers
 {
@@ -24,11 +25,31 @@ namespace SportsStore.Controllers
         //    return View(this.repository.Products);
         //}
 
+        //public ViewResult Index(int productPage = 1)
+        //=> View(repository.Products
+        //    .OrderBy(p => p.ProductID)
+        //    .Skip((productPage - 1) * PageSize)
+        //    .Take(PageSize));
+
+        /// <summary>
+        /// This function pass a ProductsListViewModel object as the model data to the view.
+        /// </summary>
+        /// <param name="productPage"></param>
+        /// <returns></returns>
         public ViewResult Index(int productPage = 1)
-        => View(repository.Products
+        => View(new ProductsListViewModel
+        {
+            Products = repository.Products
             .OrderBy(p => p.ProductID)
             .Skip((productPage - 1) * PageSize)
-            .Take(PageSize));
+            .Take(PageSize),
+            PagingInfo = new PagingInfo
+            {
+                CurrentPage = productPage,
+                ItemsPerPage = PageSize,
+                TotalItems = repository.Products.Count()
+            }
+        });
 
         public IActionResult Privacy()
         {

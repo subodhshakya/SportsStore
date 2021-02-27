@@ -4,12 +4,14 @@
 
 <!--model expression specifies that the view expects to recieve a sequence of Product objects from the
     action method as its model data-->
-@model IQueryable<Product>
+@*@model IQueryable<Product>*@
+@using SportsStore.Models.ViewModels
+@model ProductsListViewModel
 
 <div class="text-center">
     <h1 class="display-4">Welcome to SportsStore</h1>
     
-    @foreach (var p in Model)
+    @foreach (var p in Model.Products)
     { 
         <div>
             <h3>@p.Name</h3>
@@ -17,4 +19,9 @@
             <h4>@p.Price.ToString("c")</h4> <!--ToString("c") renders numerical values as currency-->
         </div>
     }
+
+    <!--When Razor finds the page-model attribute on the div element it asks
+        the PageLinkTagHelper class to transform the element, which produces the
+        set of links-->
+    <div page-model="@Model.PagingInfo" page-action="Index"></div>
 </div>
