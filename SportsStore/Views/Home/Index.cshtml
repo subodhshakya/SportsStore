@@ -11,6 +11,7 @@
 <div class="text-center">        
     @foreach (var p in Model.Products)
     {   
+        <!--NOTE: Call the partial view ProductSummary to reuse the view level code-->
         <partial name="ProductSummary" model="p" />
     }
 
