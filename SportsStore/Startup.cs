@@ -73,6 +73,16 @@ namespace SportsStore
 
             app.UseEndpoints(endpoints =>
             {
+                #region To accomodate category sidebar
+                endpoints.MapControllerRoute("catpage",
+                    "{category}/Page{productPage:int}",
+                    new { Controller = "Home", action = "Index" });
+                endpoints.MapControllerRoute("page", "Page{productPage:int}",
+                    new { Controller = "Home", action = "Index", productPage = 1 });
+                endpoints.MapControllerRoute("page", "{category}",
+                    new { Controller = "Home", action = "Index", productPage = 1 });
+                #endregion
+
                 // This new route is to make URLs more appealing
                 // by creating a composable URLs scheme
                 endpoints.MapControllerRoute("pagination", 
