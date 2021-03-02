@@ -86,6 +86,13 @@ namespace SportsStore.Models
                                 Description = "Gold-plated, diamond-studded King",
                                 Category = "Chess",
                                 Price = 1200
+                            },
+                            new Product
+                            {
+                                Name = "Chess Timer",
+                                Description = "Time keeping device for chess game",
+                                Category = "Chess",
+                                Price = 39.99m
                             }
                         );
                     context.SaveChanges();
