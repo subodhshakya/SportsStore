@@ -38,6 +38,8 @@ namespace SportsStore
             });
             services.AddScoped<IStoreRepository, EFStoreRepository>();
             services.AddRazorPages(); // Sets up the services used by Razor pages
+            services.AddDistributedMemoryCache(); // Sets up the in-memory data store
+            services.AddSession(); // Method registers the services used to access session data, and            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +67,12 @@ namespace SportsStore
             // This extension method enables support for serving static content from the
             // wwwroot folder. More details in Ch 15
             app.UseStaticFiles();
+
+            // To store details of a user's cart--session state which is data associated with a series of 
+            // requests made by a user
+            // This method allows the session system to automatically associate requests with sessions
+            // when they arrive from the client.
+            app.UseSession();
 
             // The endpoint routing feature is added to the request pipeline with the UseRouting
             // and UseEndpoints
