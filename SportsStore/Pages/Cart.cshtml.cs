@@ -22,8 +22,15 @@ namespace SportsStore.Pages
     {
         private IStoreRepository repository;
 
-        public CartModel(IStoreRepository repo) {
+        public CartModel(IStoreRepository repo, Cart cartService) {
             repository = repo;
+            
+            // The page model indicates that it needs a Cart object by declaring a 
+            // constructor argument, which has allowed me to remove the statements
+            // that load and store sessions from the handler method.
+            // Since services are available throughout the application, any
+            // component can get hold of the user's cart using the same technique.
+            Cart = cartService;
         }
 
         public Cart Cart { get; set; }
@@ -32,17 +39,29 @@ namespace SportsStore.Pages
 
         public void OnGet(string returnUrl)
         {
-            ReturnUrl = returnUrl ?? "/";
-            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+            ReturnUrl = returnUrl ?? "/";            
         }
 
         public IActionResult OnPost(long productId, string returnUrl)
         {
             Product product = repository.Products
                 .FirstOrDefault(p => p.ProductID == productId);
-            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+            //Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             Cart.AddItem(product, 1);
-            HttpContext.Session.SetJson("cart", Cart);
+            //HttpContext.Session.SetJson("cart", Cart);
+            return RedirectToPage(new { returnUrl = returnUrl });
+        }
+
+        /// <summary>
+        /// This is handler method for "Remove" from cshtml page
+        /// During the matching process, OnPost keyword is ignored
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        public IActionResult OnPostRemove(long productId, string returnUrl)
+        {
+            Cart.RemoveLine(Cart.Lines.First(cl => cl.Product.ProductID == productId).Product);
             return RedirectToPage(new { returnUrl = returnUrl });
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,13 @@ namespace SportsStore
             services.AddRazorPages(); // Sets up the services used by Razor pages
             services.AddDistributedMemoryCache(); // Sets up the in-memory data store
             services.AddSession(); // Method registers the services used to access session data, and            
+            
+            // Specifies that same object should be used to satisfy related requests for Cart instances.
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp)); 
+            
+            // Also specifies that object should always be used.
+            // This service is required so that I can access the current session in the SessionCart class.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
